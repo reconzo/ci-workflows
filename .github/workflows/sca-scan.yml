@@ -1,0 +1,31 @@
+# Inside your-org/.github/.github/workflows/sca-scan.yml
+name: Reusable SCA & Dependency Scan
+
+on:
+  workflow_call: # Enables this workflow to be called from other repositories
+
+jobs:
+  sca-and-dependency-check:
+    name: Scan Dependencies & License Compliance
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Run Trivy Vulnerability Scan
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          scan-ref: '.'
+          exit-code: '1'
+          ignore-unfixed: true
+          severity: 'CRITICAL,HIGH'
+
+      - name: Run License Compliance Check
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          scan-ref: '.'
+          scanners: 'license'
+          severity: 'CRITICAL,HIGH'
+          exit-code: '1'
