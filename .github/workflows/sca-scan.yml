@@ -31,8 +31,10 @@ jobs:
           exit-code: '1'
 
 
-      - name: Dependency Scans
+      - name: Checkout Repo
         uses: actions/checkout@v4
+      
+      - name: Dependency Scans
         uses: actions/dependency-review-action@v5
         with:
           severity: 'CRITICAL,HIGH'
